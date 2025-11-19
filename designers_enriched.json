@@ -3382,10 +3382,10 @@
     "redes": null,
     "email": "https://www.chiefofdesign.com.br/",
     "referencia_por": "Bruno Alexander",
-    "localizacao": "Web",
-    "lat": 4.4954427,
-    "lon": 38.6594263,
-    "pais": "Desconhecido"
+    "localizacao": "São Paulo",
+    "lat": -23.5506507,
+    "lon": -46.6333824,
+    "pais": "Brasil"
   },
   {
     "nome": "Gnomon(Cursos)",
@@ -3704,9 +3704,9 @@
     "redes": null,
     "email": "contato@agenciar2.com",
     "referencia_por": "Carolayne Drumond",
-    "localizacao": "Mg",
-    "lat": -18.9249604,
-    "lon": 46.4416422,
+    "localizacao": "MG",
+    "lat": -20.3856,
+    "lon": -43.5081,
     "pais": "Desconhecido"
   },
   {
@@ -20136,28 +20136,14 @@
     "ocupacao": "Ilustrador e animador",
     "ano": 2023,
     "area": "Ilustração",
-    "site": "Illustrations – Puuung (puuung1.com)",
-    "redes": "https://www.instagram.com/puuung1/",
-    "email": null,
-    "referencia_por": "Raquel Poletto",
-    "localizacao": "Sul Da Coréia",
-    "lat": -8.8236684,
-    "lon": 13.2237668,
-    "pais": "Desconhecido"
-  },
-  {
-    "nome": "Punnng",
-    "ocupacao": "Animação, audiovisual, ilustração",
-    "ano": 2023,
-    "area": "Audiovisual",
     "site": "https://puuung1.com/",
     "redes": "https://www.instagram.com/puuung1/",
     "email": null,
     "referencia_por": "Raquel Poletto",
-    "localizacao": "Sul Da Coréia",
-    "lat": -8.8236684,
-    "lon": 13.2237668,
-    "pais": "Desconhecido"
+    "localizacao": "Seoul",
+    "lat": 37.5665,
+    "lon": 126.9780,
+    "pais": "Coreia do Sul"
   },
   {
     "nome": "Rita e Malu",
@@ -21928,28 +21914,28 @@
     "ocupacao": "Web design e direção de arte",
     "ano": 2023,
     "area": "UI / UX",
-    "site": null,
+    "site": "https://www.awwwards.com/",
     "redes": null,
-    "email": "https://www.awwwards.com/",
+    "email": null,
     "referencia_por": "Weliton Martins",
-    "localizacao": "Web",
-    "lat": 4.4954427,
-    "lon": 38.6594263,
-    "pais": "Desconhecido"
+    "localizacao": "Valencia",
+    "lat": 39.4699,
+    "lon": -0.3763,
+    "pais": "Espanha"
   },
   {
     "nome": "Css Design Awards",
     "ocupacao": "Web design e direção de arte",
     "ano": 2023,
     "area": "UI / UX",
-    "site": null,
+    "site": "https://www.cssdesignawards.com/",
     "redes": null,
-    "email": "https://www.cssdesignawards.com/",
+    "email": null,
     "referencia_por": "Weliton Martins",
-    "localizacao": "Web",
-    "lat": 4.4954427,
-    "lon": 38.6594263,
-    "pais": "Desconhecido"
+    "localizacao": "Surrey, British Columbia",
+    "lat": 49.1061,
+    "lon": -122.8011,
+    "pais": "Canadá"
   },
   {
     "nome": "Design Circuit(Cursos)",
@@ -22030,10 +22016,10 @@
     "redes": null,
     "email": "https://tableless.com.br/",
     "referencia_por": "Weliton Martins",
-    "localizacao": "Web",
-    "lat": 4.4954427,
-    "lon": 38.6594263,
-    "pais": "Desconhecido"
+    "localizacao": "São Paulo",
+    "lat": -23.55052,
+    "lon": -46.63331,
+    "pais": "Brasil"
   },
   {
     "nome": "UX Collective",
@@ -22044,10 +22030,10 @@
     "redes": null,
     "email": "https://brasil.uxdesign.cc/",
     "referencia_por": "Weliton Martins",
-    "localizacao": "Web",
-    "lat": 4.4954427,
-    "lon": 38.6594263,
-    "pais": "Desconhecido"
+    "localizacao": "Brasil",
+    "lat": -23.55052,
+    "lon": -46.63331,
+    "pais": "Brasil"
   },
   {
     "nome": "Edi Silva",
