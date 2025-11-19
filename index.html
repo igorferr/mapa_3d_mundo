@@ -69,7 +69,7 @@
       position: fixed;
       background: rgba(10, 14, 39, 0.95);
       color: #fff;
-      padding: 12px 16px;
+      padding: 16px 20px;
       border-radius: 8px;
       pointer-events: none;
       z-index: 100;
@@ -77,7 +77,7 @@
       line-height: 1.6;
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
-      max-width: 300px;
+      max-width: 350px;
       transition: all 0.2s;
     }
     #tooltip.locked {
@@ -110,6 +110,45 @@
     }
     #close-tooltip:hover {
       background: rgba(255, 255, 255, 0.2);
+    }
+    .tooltip-section {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .tooltip-section:first-of-type {
+      margin-top: 6px;
+      padding-top: 6px;
+    }
+    .tooltip-label {
+      font-size: 11px;
+      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    .tooltip-value {
+      font-size: 13px;
+    }
+    .tooltip-ref {
+      font-size: 12px;
+      max-height: 40px;
+      overflow: hidden;
+      transition: max-height 0.3s;
+    }
+    .tooltip-ref.expanded {
+      max-height: 200px;
+    }
+    .tooltip-ver-mais {
+      color: #4D96FF;
+      cursor: pointer;
+      font-size: 11px;
+      text-decoration: underline;
+      margin-top: 2px;
+      display: inline-block;
+    }
+    .tooltip-ver-mais:hover {
+      opacity: 0.8;
     }
     .tooltip-link {
       color: #4D96FF;
@@ -206,7 +245,6 @@
       controls.autoRotate = true;
       controls.autoRotateSpeed = 0.5;
 
-      // Luzes
       const ambient = new THREE.AmbientLight(0xffffff, 0.6);
       scene.add(ambient);
       
@@ -237,13 +275,11 @@
         const cleanText = text.replace(/:\s*NaN/g, ': null');
         rawData = JSON.parse(cleanText);
         
-        // Filtra e normaliza dados
         rawData = rawData.filter(d => {
           const lat = d.lat || d.latitude || (d.coords && d.coords[0]);
           const lon = d.lon || d.longitude || (d.coords && d.coords[1]);
           return lat != null && lon != null && !isNaN(lat) && !isNaN(lon);
         }).map(d => {
-          // Normaliza coordenadas
           if (d.coords && Array.isArray(d.coords)) {
             d.lat = Number(d.coords[0]);
             d.lon = Number(d.coords[1]);
@@ -251,25 +287,19 @@
             d.lat = Number(d.lat || d.latitude);
             d.lon = Number(d.lon || d.longitude);
           }
-          
-          // Garante que ano seja número
           if (d.ano) {
             d.ano = Number(d.ano);
           }
-          
           return d;
         });
         
         console.log(`✅ ${rawData.length} designers carregados!`);
-        console.log('📊 Exemplo de dados:', rawData[0]); // Debug
-        console.log('🌍 Países encontrados:', [...new Set(rawData.map(d => d.pais).filter(Boolean))]);
-        console.log('📅 Anos encontrados:', [...new Set(rawData.map(d => d.ano).filter(Boolean))]);
+        console.log('📊 Exemplo de dados:', rawData[0]);
       } catch(e) {
         console.error("❌ Erro ao carregar:", e);
         rawData = [
           {nome: "Ana Silva", area: "UX Design", pais: "Brasil", ano: 2024, lat: -15.7801, lon: -47.9292},
-          {nome: "João Santos", area: "Branding", pais: "Brasil", ano: 2023, lat: -23.5505, lon: -46.6333},
-          {nome: "Maria Costa", area: "UX Design", pais: "Portugal", ano: 2024, lat: 38.7223, lon: -9.1393}
+          {nome: "João Santos", area: "Branding", pais: "Brasil", ano: 2023, lat: -23.5505, lon: -46.6333}
         ];
       }
 
@@ -282,33 +312,33 @@
       const years = new Set();
       
       rawData.forEach(d => {
-        if (d.area) areas.add(d.area);
-        if (d.pais) countries.add(d.pais);
-        if (d.ano) years.add(d.ano);
+        if (d.area && d.area !== null) areas.add(d.area);
+        if (d.pais && d.pais !== null) countries.add(d.pais);
+        if (d.ano && d.ano !== null && !isNaN(d.ano)) years.add(Number(d.ano));
       });
 
       const areaList = Array.from(areas).sort();
       const countryList = Array.from(countries).sort();
-      const yearList = Array.from(years).sort((a, b) => b - a); // Ordem decrescente (mais recente primeiro)
+      const yearList = Array.from(years).sort((a, b) => b - a);
 
       const palette = [0xFF6B6B,0x4D96FF,0x9B59B6,0xFFD66B,0x4EE39A,0xFF8C42,0xC0E0FF];
       areaList.forEach((a,i) => areaColors[a] = new THREE.Color(palette[i % palette.length]));
 
-      // Popula select de áreas
+      selectArea.innerHTML = '<option value="">— Filtrar por área —</option>';
       areaList.forEach(a => {
         const o = document.createElement("option");
         o.value = a; o.textContent = a;
         selectArea.appendChild(o);
       });
       
-      // Popula select de países
+      selectCountry.innerHTML = '<option value="">— Filtrar por país —</option>';
       countryList.forEach(c => {
         const o = document.createElement("option");
         o.value = c; o.textContent = c;
         selectCountry.appendChild(o);
       });
       
-      // Popula select de anos
+      selectYear.innerHTML = '<option value="">— Filtrar por ano —</option>';
       yearList.forEach(y => {
         const o = document.createElement("option");
         o.value = y; o.textContent = y;
@@ -319,13 +349,11 @@
     }
 
     function createGlobe(){
-      // Globo com textura da Terra
       const globeGeometry = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 64);
       
       const textureLoader = new THREE.TextureLoader();
       const earthTexture = textureLoader.load(
-        'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r158/examples/textures/planets/earth_atmos_2048.jpg',
-        () => console.log('✅ Textura da Terra carregada!')
+        'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r158/examples/textures/planets/earth_atmos_2048.jpg'
       );
       
       const globeMaterial = new THREE.MeshPhongMaterial({
@@ -337,7 +365,6 @@
       globe = new THREE.Mesh(globeGeometry, globeMaterial);
       scene.add(globe);
 
-      // Atmosfera (glow)
       const atmosphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS * 1.02, 64, 64);
       const atmosphereMaterial = new THREE.MeshBasicMaterial({
         color: 0x4488ff,
@@ -348,7 +375,6 @@
       const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
       scene.add(atmosphere);
 
-      // Estrelas ao fundo
       const starsGeometry = new THREE.BufferGeometry();
       const starsMaterial = new THREE.PointsMaterial({
         color: 0xffffff,
@@ -459,11 +485,16 @@
     }
 
     function showTooltip(item, clientX, clientY, locked){
-      const name = item.nome || "—";
+      const nome = item.nome || "—";
+      const ocupacao = item.ocupacao || null;
       const area = item.area || "—";
+      const localizacao = item.localizacao || null;
       const pais = item.pais || "—";
-      const ano = item.ano || "—";
-      const site = item.site || "";
+      const ano = item.ano || null;
+      const site = item.site || null;
+      const redes = item.redes || null;
+      const email = item.email || null;
+      const referenciaPor = item.referencia_por || null;
 
       tooltip.classList.remove("hidden");
       if (locked) {
@@ -475,15 +506,75 @@
       tooltip.style.left = `${clientX + 12}px`;
       tooltip.style.top = `${clientY + 12}px`;
       
-      tooltip.innerHTML = `
-        <button id="close-tooltip">×</button>
-        <strong>${escapeHtml(name)}</strong><br/>
-        <small>${escapeHtml(area)} • ${escapeHtml(pais)} ${ano !== "—" ? `• ${ano}` : ''}</small>
-        ${site ? `<div style="margin-top:8px;"><a class="tooltip-link" href="${escapeHtml(site)}" target="_blank" rel="noopener noreferrer">🔗 Abrir site</a></div>` : ''}
-        ${locked ? '<div style="margin-top:6px;font-size:11px;opacity:0.6;">Clique fora ou no X para fechar</div>' : ''}
-      `;
+      let html = `<button id="close-tooltip">×</button>`;
       
-      // Re-adiciona o event listener
+      html += `<div><strong style="font-size: 16px;">${escapeHtml(nome)}</strong></div>`;
+      if (ocupacao) {
+        html += `<div style="font-size: 12px; opacity: 0.8; margin-top: 2px;">${escapeHtml(ocupacao)}</div>`;
+      }
+      
+      html += `<div class="tooltip-section">`;
+      html += `<div class="tooltip-label">Área</div>`;
+      html += `<div class="tooltip-value">${escapeHtml(area)}</div>`;
+      html += `</div>`;
+      
+      html += `<div class="tooltip-section">`;
+      html += `<div class="tooltip-label">Localização</div>`;
+      html += `<div class="tooltip-value">`;
+      if (localizacao && localizacao !== pais) {
+        html += `${escapeHtml(localizacao)}, ${escapeHtml(pais)}`;
+      } else {
+        html += `${escapeHtml(pais)}`;
+      }
+      html += `</div></div>`;
+      
+      if (ano) {
+        html += `<div class="tooltip-section">`;
+        html += `<div class="tooltip-label">Ano</div>`;
+        html += `<div class="tooltip-value">${ano}</div>`;
+        html += `</div>`;
+      }
+      
+      if (site) {
+        html += `<div class="tooltip-section">`;
+        html += `<div class="tooltip-label">Site</div>`;
+        html += `<div class="tooltip-value"><a class="tooltip-link" href="${escapeHtml(site)}" target="_blank" rel="noopener noreferrer">🔗 Visitar site</a></div>`;
+        html += `</div>`;
+      }
+      
+      if (redes) {
+        html += `<div class="tooltip-section">`;
+        html += `<div class="tooltip-label">Redes Sociais</div>`;
+        html += `<div class="tooltip-value"><a class="tooltip-link" href="${escapeHtml(redes)}" target="_blank" rel="noopener noreferrer">📱 Ver perfil</a></div>`;
+        html += `</div>`;
+      }
+      
+      if (email) {
+        html += `<div class="tooltip-section">`;
+        html += `<div class="tooltip-label">Email</div>`;
+        html += `<div class="tooltip-value"><a class="tooltip-link" href="mailto:${escapeHtml(email)}">✉️ ${escapeHtml(email)}</a></div>`;
+        html += `</div>`;
+      }
+      
+      if (referenciaPor) {
+        const refId = `ref-${Math.random().toString(36).substr(2, 9)}`;
+        const isLong = referenciaPor.length > 60;
+        
+        html += `<div class="tooltip-section">`;
+        html += `<div class="tooltip-label">Referenciado por</div>`;
+        html += `<div id="${refId}" class="tooltip-ref tooltip-value">${escapeHtml(referenciaPor)}</div>`;
+        if (isLong) {
+          html += `<span class="tooltip-ver-mais" onclick="document.getElementById('${refId}').classList.toggle('expanded'); this.textContent = this.textContent === 'Ver mais' ? 'Ver menos' : 'Ver mais';">Ver mais</span>`;
+        }
+        html += `</div>`;
+      }
+      
+      if (locked) {
+        html += `<div style="margin-top:10px;font-size:11px;opacity:0.5;text-align:center;">Clique fora ou no X para fechar</div>`;
+      }
+      
+      tooltip.innerHTML = html;
+      
       const closeBtn = document.getElementById("close-tooltip");
       if (closeBtn) {
         closeBtn.addEventListener("click", unlockTooltip);
@@ -563,7 +654,6 @@
     function animate(){
       requestAnimationFrame(animate);
       
-      // Anima o glow dos marcadores
       markers.forEach(({glow}, i) => {
         if (glow.visible) {
           const scale = 1 + Math.sin(Date.now() * 0.002 + i) * 0.2;
