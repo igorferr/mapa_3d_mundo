@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mapa de Designers — Three.js</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="ui">
+    <div class="controls">
+      <input id="search" placeholder="Buscar por nome..." />
+      <select id="select-area"><option value="">— Filtrar por área —</option></select>
+      <select id="select-country"><option value="">— Filtrar por país —</option></select>
+      <button id="btn-reset">Reset</button>
+    </div>
+    <div id="legend"></div>
+  </div>
+
+  <div id="container"></div>
+
+  <div id="tooltip" class="hidden"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
